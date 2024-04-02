@@ -14,6 +14,9 @@
     <name>laboratorio2</name>
     <description>Demo project for Spring Boot</description>
     <properties>
+        <sonar.organization>ferneymontoya6</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectKey>FerneyMontoya6_laboratorio2-arquisoft</sonar.projectKey>
         <java.version>17</java.version>
     </properties>
     <dependencies>
