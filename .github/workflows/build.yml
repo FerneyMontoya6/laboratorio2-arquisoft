@@ -140,14 +140,10 @@ jobs:
         uses: actions/checkout@v2
 
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
       # Construir la imagen Docker
       - name: Build Docker image
         run: |
-          docker build -t arquisoft-lab2 -f ../../Dockerfile 
-      
+          docker build -t arquisoft-lab2 -f ../../Dockerfile .
 
       # Login a AWS ECR y subir la imagen
       - name: Login to AWS ECR and push image
