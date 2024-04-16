@@ -161,6 +161,6 @@ jobs:
 
       - name: Tag and push Docker image to AWS ECR
         run: |
-          docker tag arquisoft-lab2:latest public.ecr.aws/e6r1j8j8/arquisoft-lab2:latest
-          docker push public.ecr.aws/e6r1j8j8/arquisoft-lab2:latest
+          docker tag arquisoft-lab2 public.ecr.aws/e6r1j8j8/arquisoft-lab2
+          docker push public.ecr.aws/e6r1j8j8/arquisoft-lab2
 
