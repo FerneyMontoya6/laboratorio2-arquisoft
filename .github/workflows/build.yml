@@ -3,23 +3,16 @@
 name: CI/CD Pipeline
 
 on:
-
   #Manually trigger workflow runs
-
   workflow_dispatch:
-
   #Trigger the workflow on push from the main branch
-
   push:
-
     branches:
-
-      - mi-rama
+      - main
 
 jobs:
 
   #Test's job
-
   tests:
 
     name: Unit tests
@@ -33,39 +26,25 @@ jobs:
     steps:
 
       #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
-
       - uses: actions/checkout@v1
 
       #Set up JDK 11
-
       - name: Set up JDK
-
         uses: actions/setup-java@v1
-
         with:
-
           java-version: '17'
 
       #Set up Maven cache
-
       - name: Cache Maven packages
-
         #This action allows caching dependencies and build outputs to improve workflow execution time.
-
         uses: actions/cache@v1
-
         with:
-
           path: ~/.m2
-
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-
           restore-keys: ${{ runner.os }}-m2
 
       #Run Tests
-
       - name: Run Tests
-
         run: mvn -B test
 
 
@@ -109,6 +88,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+
+
   #Build's job
   build:
     #Depends on sonar's job
@@ -124,7 +105,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '17'
-      #Set up Maven cache
+      #Set up Maven cache/home/ferney
       - name: Cache Maven packages
         #This action allows caching dependencies and build outputs to improve workflow execution time.
         uses: actions/cache@v1
@@ -144,3 +125,36 @@ jobs:
           name: artifact
           #From this path
           path: target/laboratorio2-0.0.1-SNAPSHOT.jar
+
+
+
+  #Modificaciones Fer
+  deploy:
+    name: Deploy to AWS ECR
+    runs-on: ubuntu-latest
+    needs: [ build ]  # Este job depende de que el job "build" haya terminado correctamente
+
+    steps:
+      # Checkout del repositorio
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Construir la imagen Docker
+      - name: Build Docker image
+        run: |
+          docker build -t arquisoft-lab2 .
+
+      # Login a AWS ECR y subir la imagen
+      - name: Login to AWS ECR and push image
+        id: deploy-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Tag and push Docker image to AWS ECR
+        run: |
+          docker tag arquisoft-lab2:latest public.ecr.aws/e6r1j8j8/arquisoft-lab2:latest
+          docker push public.ecr.aws/e6r1j8j8/arquisoft-lab2:latest
+
