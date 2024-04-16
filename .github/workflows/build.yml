@@ -28,8 +28,8 @@ jobs:
       # Construir la imagen Docker
       - name: Build Docker image
         run: |
-          ls ../
-          docker build -t arquisoft-lab2 -f ../Dockerfile .
+          ls ./
+          docker build -t arquisoft-lab2 -f ./Dockerfile .
 
       # Login a AWS ECR y subir la imagen
       - name: Login to AWS ECR and push image
