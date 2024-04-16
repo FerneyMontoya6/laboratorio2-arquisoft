@@ -155,12 +155,10 @@ jobs:
         id: deploy-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          mask-password: true
-          registry-type: private
-          skip-logout: false
+          registry-type: public
 
       - name: Tag and push Docker image to AWS ECR
         run: |
-          docker tag arquisoft-lab2 public.ecr.aws/e6r1j8j8/arquisoft-lab2
-          docker push public.ecr.aws/e6r1j8j8/arquisoft-lab2
+          docker tag arquisoft-lab2:latest public.ecr.aws/e6r1j8j8/arquisoft-lab2:latest
+          docker push public.ecr.aws/e6r1j8j8/arquisoft-lab2:latest
 
