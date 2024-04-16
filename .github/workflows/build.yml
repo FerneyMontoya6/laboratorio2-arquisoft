@@ -143,12 +143,16 @@ jobs:
         run: |
           docker build -t arquisoft-lab2 -f ./Dockerfile .
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
+        with:
+          aws-region: us-east-1
+
       # Login a AWS ECR y subir la imagen
       - name: Login to AWS ECR and push image
         id: deploy-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          region: us-east-1
           mask-password: true
           registry-type: private
           skip-logout: false
